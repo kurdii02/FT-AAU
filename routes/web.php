@@ -3,19 +3,32 @@
 use App\Http\Controllers\TrainingController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [App\Http\Controllers\WelcomeController::class, 'home']);
 
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::group(['middleware' => ['role:super_admin']], function () {
-    Route::resource('/user', App\Http\Controllers\UserController::class)->middleware('auth');
-    Route::resource('/role', App\Http\Controllers\RoleController::class)->middleware('auth');
-    Route::resource('/trainings', App\Http\Controllers\StudentController::class)->middleware('auth');
+Route::group(['middleware' => ['auth', 'role:super_admin,admin,trainer,student']], function () {
+    Route::resource('/user', App\Http\Controllers\UserController::class);
     Route::resource('trainings', TrainingController::class);
-    Route::resource('/company', App\Http\Controllers\CompanyController::class)->middleware('auth');
+    Route::get('/trainings/{id}/details', [TrainingController::class, 'addDetailsPage'])->name('details.edit');
+    Route::put('/trainings/{id}/details', [TrainingController::class, 'addDetails'])->name('trainings.details');
+    Route::resource('/role', App\Http\Controllers\RoleController::class);
+    Route::resource('/company', App\Http\Controllers\CompanyController::class);
     Route::put('/user/{id}/status/{status}', [UserController::class, 'updateStatus'])->name('user.updateStatus');
+    Route::resource('/header', App\Http\Controllers\Home\HeaderController::class);
+    Route::resource('/features', App\Http\Controllers\Home\FeaturesController::class);
+    Route::resource('/mission', App\Http\Controllers\Home\MissionController::class);
+    Route::resource('trainings.tasks', App\Http\Controllers\TaskController::class);
+
+    // Task submission routes
+    Route::get('trainings/{training}/tasks/{task}/submit', [App\Http\Controllers\TaskSubmissionController::class, 'create'])
+        ->name('trainings.tasks.submissions.create');
+    Route::post('trainings/{training}/tasks/{task}/submit', [App\Http\Controllers\TaskSubmissionController::class, 'store'])
+        ->name('trainings.tasks.submissions.store');
+    Route::put('trainings/{training}/tasks/{task}/submissions/{submission}/review', [App\Http\Controllers\TaskSubmissionController::class, 'review'])
+        ->name('trainings.tasks.submissions.review');
 });
+Route::get('/download/{training}',  [TrainingController::class, 'getDownload'])->name('download');

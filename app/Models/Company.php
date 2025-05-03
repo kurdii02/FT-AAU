@@ -11,10 +11,10 @@ class Company extends Model
     use HasFactory, Notifiable;
 
 
-    protected $fillable = ['name','email','location'];
+    protected $fillable = ['name', 'email', 'location'];
 
     public function trainer()
     {
-        return $this->hasMany(Trainer::class);
+        return $this->hasMany(User::class, 'trainer_id');
     }
 }

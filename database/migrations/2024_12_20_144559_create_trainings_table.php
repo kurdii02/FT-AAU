@@ -17,7 +17,8 @@ return new class extends Migration
             $table->foreignId('trainer_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('admin_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('company_id')->nullable()->constrained('companies')->onDelete('set null');
-            $table->integer('status')->default(0);  // Status: 0 = not started, 1 = in progress, 2 = completed
+            $table->integer('status')->default(0);
+
             $table->timestamps();
         });
     }

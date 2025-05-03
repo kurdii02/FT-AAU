@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Company;
+use App\Models\Training;
 use App\Models\Role;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -13,7 +15,25 @@ class UserController extends Controller
 
     public function index()
     {
-        $users = User::paginate(5);
+
+        if (Auth::user()->role->name == "super_admin") {
+            $users = User::paginate(5);
+        } elseif (Auth::user()->role->name == "admin") {
+            $admin = Auth::user();
+            $users = Training::where('admin_id', $admin->id)
+                ->where('status', 1)
+                ->with('student')
+                ->get()
+                ->pluck('student');
+        } elseif (Auth::user()->role->name == "trainer") {
+            $trainer = Auth::user();
+            $users = Training::where('trainer_id', $trainer->id)
+                ->where('status', 1)
+                ->with('student')
+                ->get()
+                ->pluck('student');
+        }
+
 
         return view('user.index', compact('users'));
     }
@@ -21,8 +41,8 @@ class UserController extends Controller
     public function create()
     {
         $roles = Role::all();
-        $companies=Company::all();
-        return view('user.create', compact(['roles','companies']));
+        $companies = Company::all();
+        return view('user.create', compact(['roles', 'companies']));
     }
 
 
@@ -51,10 +71,7 @@ class UserController extends Controller
         return redirect()->route('user.index');
     }
 
-    public function show()
-    {
-
-    }
+    public function show() {}
 
     public function destroy(User $user)
     {

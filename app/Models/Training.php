@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use App\Models\Task;
 
 class Training extends Model
 {
@@ -15,6 +17,8 @@ class Training extends Model
         'admin_id',
         'company_id',
         'status',
+        'training_book',
+        'Additional_notes'
     ];
 
     public function student()
@@ -36,5 +40,9 @@ class Training extends Model
     {
         return $this->belongsTo(Company::class, 'company_id');
     }
-}
 
+    public function tasks(): HasMany
+    {
+        return $this->hasMany(Task::class);
+    }
+}

@@ -7,19 +7,37 @@ use App\Models\Training;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Response;
+use ZipArchive;
+use Illuminate\Support\Str;
 
 class TrainingController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function __construct()
-    {
-        $this->middleware('role:super_admin');  // Ensure only super_admin can access these routes
-    }
+
     public function index()
     {
-        $trainings = Training::with(['student', 'trainer', 'admin', 'company'])->get();
+        if (Auth::user()->role->name == "super_admin") {
+            $trainings = Training::with(['student', 'trainer', 'admin', 'company'])->get();
+        } elseif (Auth::user()->role->name == "admin") {
+            $trainings = Training::with(['student', 'trainer', 'admin', 'company'])
+                ->where('admin_id', Auth::id())
+                ->get();
+        }
+        if (Auth::user()->role->name == "trainer") {
+            $trainings = Training::with(['student', 'trainer', 'admin', 'company'])
+                ->where('trainer_id', Auth::id())
+                ->get();
+        }
+        if (Auth::user()->role->name == "student") {
+            $trainings = Training::with(['student', 'trainer', 'admin', 'company'])
+                ->where('student_id', Auth::id())
+                ->get();
+        }
         return view('trainings.index', compact('trainings'));
     }
 
@@ -105,5 +123,61 @@ class TrainingController extends Controller
     {
         $training->delete();
         return redirect()->route('trainings.index');
+    }
+
+
+    public function addDetailsPage($id)
+    {
+        $training = Training::find($id);
+        return view('trainings.details', compact('training'));
+    }
+    public function addDetails(Request $request, $id)
+    {
+        $training = Training::findOrFail($id);
+        $data = $request->validate([
+            'evaluation' => 'nullable|mimes:jpeg,png,jpg,gif,svg,webp,pdf,docx|max:2048',
+        ]);
+        if ($request->hasFile('evaluation')) {
+            $filePath = $request->file('evaluation')->store('training_files/Evaluation', 'public');
+            $training->evaluation = $filePath;
+        }
+
+
+        $training->save();
+
+        return redirect()->route('trainings.index');
+    }
+    public function getDownload(Training $training)
+    {
+        // Build full paths to the files (assuming they're in /public directory)
+        $files = [
+            public_path('storage/' . $training->evaluation),
+            public_path('storage/' . $training->training_book)
+        ];
+
+        // Filter only existing files
+        // $files = array_filter($files, fn($file) => file_exists($file));
+
+        // dd($files);
+
+        if (empty($files)) {
+            abort(404, 'Files not found.');
+        }
+
+        $zipFileName = 'training-files-' . Str::random(6) . '.zip';
+        $zipPath = storage_path("app/{$zipFileName}");
+
+        $zip = new ZipArchive;
+        if ($zip->open($zipPath, ZipArchive::CREATE) === TRUE) {
+            foreach ($files as $file) {
+                // dd($file);
+                $zip->addFile($file, basename($file)); // Add each file with its original name
+            }
+            $zip->close();
+        } else {
+            abort(500, 'Could not create ZIP archive.');
+        }
+
+        return response()->download($zipPath);
     }
 }

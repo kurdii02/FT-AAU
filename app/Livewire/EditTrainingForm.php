@@ -6,9 +6,12 @@ use App\Models\Company;
 use App\Models\Training;
 use App\Models\User;
 use Livewire\Component;
+use Illuminate\Http\Request;
+use Livewire\WithFileUploads;
 
 class EditTrainingForm extends Component
 {
+    use WithFileUploads;
     public $training;
     public $students;
     public $admins;
@@ -19,6 +22,8 @@ class EditTrainingForm extends Component
     public $selectedTrainer;
     public $selectedCompany;
     public $status;
+    public $notes;
+    public $tbook;
 
     public function mount(Training $training)
     {
@@ -26,13 +31,13 @@ class EditTrainingForm extends Component
         $this->companies = Company::all();
         $this->students = User::where('role_id', 3)->get();
         $this->admins = User::where('role_id', 2)->get();
-        
-        // Set initial values
         $this->selectedStudent = $training->student_id;
         $this->selectedAdmin = $training->admin_id;
         $this->selectedCompany = $training->company_id;
         $this->selectedTrainer = $training->trainer_id;
         $this->status = $training->status;
+        $this->notes = $training->Additional_notes;
+        $this->tbook = $training->training_book;
 
         // Load trainers for the selected company
         if ($this->selectedCompany) {
@@ -66,14 +71,20 @@ class EditTrainingForm extends Component
                 'selectedTrainer' => 'required|exists:users,id',
                 'selectedCompany' => 'required|exists:companies,id',
                 'status' => 'required|boolean',
+                'notes' => 'nullable|string|max:255',
+                'tbook' => 'nullable|mimes:jpeg,png,jpg,gif,svg,webp,pdf,docx|max:2048',
             ]);
-
+            if ($this->tbook) {
+                $filePath = $this->tbook->store('training_files/Training_book', 'public');
+                $this->training->training_book = $filePath;
+            }
             $this->training->update([
                 'student_id' => $this->selectedStudent,
                 'admin_id' => $this->selectedAdmin,
                 'trainer_id' => $this->selectedTrainer,
                 'status' => $this->status,
                 'company_id' => $this->selectedCompany,
+                'Additional_notes' => $this->notes
             ]);
 
             session()->flash('message', 'Training updated successfully!');

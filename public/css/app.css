@@ -6,7 +6,8 @@
     --gradient-primary: linear-gradient(135deg, #8b3812 0%, #f66824 100%);
     --gradient-hover: linear-gradient(135deg, #f66824 0%, #8b3812 100%);
     --content-padding: 2rem;
-    --navbar-height: 60px;  /* Add this new variable */
+    --navbar-height: 60px;
+    /* Add this new variable */
 }
 
 .bg-gradient {
@@ -15,7 +16,8 @@
 }
 
 .navbar {
-    display: none; /* Hide the top navbar */
+    display: none;
+    /* Hide the top navbar */
 }
 
 .navbar-brand {
@@ -257,8 +259,8 @@
     flex: 1;
 }
 
-.user-dropdown i{
-    color:#fff !important;
+.user-dropdown i {
+    color: #fff !important;
 }
 
 .user-name {
@@ -292,7 +294,8 @@
     width: 100%;
     max-width: none;
     padding: 0 1.5rem;
-    margin: 0; /* Reset margins */
+    margin: 0;
+    /* Reset margins */
 }
 
 .container-xl {
@@ -341,7 +344,7 @@
     font-size: 1.25rem;
 }
 
-.sidebar.collapsed + .main-content {
+.sidebar.collapsed+.main-content {
     width: calc(100% - var(--sidebar-collapsed-width));
     margin-left: var(--sidebar-collapsed-width);
 }
@@ -353,11 +356,11 @@
         transform: translateX(-100%);
         transition: transform 0.3s ease;
     }
-    
+
     .sidebar.active {
         transform: translateX(0);
     }
-    
+
     .main-content {
         width: 100%;
         margin-left: 0;
@@ -372,7 +375,7 @@
         font-size: 0.7rem;
     }
 
-    .sidebar.active + .main-content {
+    .sidebar.active+.main-content {
         width: 100%;
         margin-left: 0;
     }
@@ -403,8 +406,15 @@
 
 /* Add smooth transitions */
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* Ensure content fills available space */
@@ -446,4 +456,19 @@
     width: 100%;
     min-height: calc(100vh - var(--navbar-height));
     padding: 2rem;
+}
+
+.modal-dialog {
+    top: 18%;
+}
+
+.modal-content {
+    height: 500px;
+}
+
+@media (min-width: 576px) {
+    .modal-dialog {
+        max-width: 40% !important;
+
+    }
 }

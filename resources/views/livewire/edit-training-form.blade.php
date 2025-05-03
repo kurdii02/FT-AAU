@@ -1,12 +1,12 @@
 <div class="registration-container">
     <div class="admin-content">
-        @if(session()->has('message'))
+        @if (session()->has('message'))
             <div class="alert alert-success">
                 {{ session('message') }}
             </div>
         @endif
 
-        @if(session()->has('error'))
+        @if (session()->has('error'))
             <div class="alert alert-danger mt-4">
                 {{ session('error') }}
             </div>
@@ -27,8 +27,8 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label for="student" class="form-label">Student</label>
-                        <select id="student" class="form-select @error('selectedStudent') is-invalid @enderror" 
-                                wire:model="selectedStudent">
+                        <select id="student" class="form-select @error('selectedStudent') is-invalid @enderror"
+                            wire:model="selectedStudent">
                             <option value="">Select Student</option>
                             @foreach ($students as $student)
                                 <option value="{{ $student->id }}">{{ $student->name }}</option>
@@ -41,8 +41,8 @@
 
                     <div class="form-group">
                         <label for="admin" class="form-label">Admin</label>
-                        <select id="admin" class="form-select @error('selectedAdmin') is-invalid @enderror" 
-                                wire:model="selectedAdmin">
+                        <select id="admin" class="form-select @error('selectedAdmin') is-invalid @enderror"
+                            wire:model="selectedAdmin">
                             <option value="">Select Admin</option>
                             @foreach ($admins as $admin)
                                 <option value="{{ $admin->id }}">{{ $admin->name }}</option>
@@ -60,8 +60,8 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label for="company" class="form-label">Company</label>
-                        <select id="company" class="form-select @error('selectedCompany') is-invalid @enderror" 
-                                wire:model.live="selectedCompany">
+                        <select id="company" class="form-select @error('selectedCompany') is-invalid @enderror"
+                            wire:model.live="selectedCompany">
                             <option value="">Select Company</option>
                             @foreach ($companies as $company)
                                 <option value="{{ $company->id }}">{{ $company->name }}</option>
@@ -73,26 +73,26 @@
                     </div>
 
                     @if ($selectedCompany)
-                    <div class="form-group">
-                        <label for="trainer" class="form-label">Trainer</label>
-                        <select id="trainer" class="form-select @error('selectedTrainer') is-invalid @enderror" 
+                        <div class="form-group">
+                            <label for="trainer" class="form-label">Trainer</label>
+                            <select id="trainer" class="form-select @error('selectedTrainer') is-invalid @enderror"
                                 wire:model.live="selectedTrainer">
-                            <option value="">Select Trainer</option>
-                            @foreach ($trainers as $trainer)
-                                <option value="{{ $trainer->id }}">{{ $trainer->name }}</option>
-                            @endforeach
-                        </select>
-                        @error('selectedTrainer')
-                            <span class="invalid-feedback">{{ $message }}</span>
-                        @enderror
-                    </div>
+                                <option value="">Select Trainer</option>
+                                @foreach ($trainers as $trainer)
+                                    <option value="{{ $trainer->id }}">{{ $trainer->name }}</option>
+                                @endforeach
+                            </select>
+                            @error('selectedTrainer')
+                                <span class="invalid-feedback">{{ $message }}</span>
+                            @enderror
+                        </div>
                     @endif
                 </div>
 
                 <div class="form-group">
                     <label for="status" class="form-label">Status</label>
-                    <select id="status" class="form-select @error('status') is-invalid @enderror" 
-                            wire:model="status">
+                    <select id="status" class="form-select @error('status') is-invalid @enderror"
+                        wire:model="status">
                         <option value="1">Active</option>
                         <option value="0">Inactive</option>
                     </select>
@@ -101,16 +101,47 @@
                     @enderror
                 </div>
             </div>
+            <div class="section-wrapper">
+                <h3 class="form-section-title">Upload Training Book</h3>
+                <div class="form-group">
+                    <label for="title" class="form-label">File</label>
+                    <input id="tbook" type="file" class="form-control @error('tbook') is-invalid @enderror"
+                        wire:model="tbook" value="{{ old('tbook', $training->training_book) }}" required autofocus>
 
-            <div class="form-actions">
-                <a href="{{ route('trainings.index') }}" class="btn btn-link">Cancel</a>
-                <button type="submit" class="btn btn-primary" wire:loading.class="loading" wire:target="updateTraining">
-                    <span wire:loading.remove wire:target="updateTraining" class="btn-text">
-                        Update Training
-                    </span>
-                    <span wire:loading wire:target="updateTraining">Processing...</span>
-                </button>
+                    @error('tbook')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+                </div>
+
+                <div class="form-group">
+                    <label for="sub_title" class="form-label">Sub Title</label>
+
+                    <textarea id="additional_notes" class="form-control @error('notes') is-invalid @enderror" wire:model="notes" required
+                        autofocus>
+                    @if ($training->Additional_notes)
+{{ $training->Additional_notes }}
+@endif
+                    </textarea>
+                    @error('notes')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+
+                </div>
             </div>
-        </form>
     </div>
+    <div class="form-actions">
+        <a href="{{ route('trainings.index') }}" class="btn btn-link">Cancel</a>
+        <button type="submit" class="btn btn-primary" wire:loading.class="loading" wire:target="updateTraining">
+            <span wire:loading.remove wire:target="updateTraining" class="btn-text">
+                Update Training
+            </span>
+            <span wire:loading wire:target="updateTraining">Processing...</span>
+        </button>
+    </div>
+    </form>
+</div>
 </div>

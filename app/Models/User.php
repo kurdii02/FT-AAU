@@ -42,39 +42,6 @@ class User extends Authenticatable
         return $this->belongsTo(Role::class); // A user belongs to one role
     }
 
-
-    /**
-     * Students managed by the user as an admin
-     */
-    public function studentsAsAdmin()
-    {
-        return $this->hasMany(StudentRelation::class, 'admin_id', 'id');
-    }
-
-    /**
-     * Students associated with the user as a trainer
-     */
-    public function studentsAsTrainer()
-    {
-        return $this->hasMany(StudentRelation::class, 'trainer_id', 'id');
-    }
-
-    /**
-     * Admin associated with the user as a trainings
-     */
-    public function admin()
-    {
-        return $this->hasOne(StudentRelation::class, 'student_id', 'id')->with('admin');
-    }
-
-    /**
-     * Trainer associated with the user as a trainings
-     */
-    public function trainer()
-    {
-        return $this->hasOne(StudentRelation::class, 'student_id', 'id')->with('trainer');
-    }
-
     public function isActive()
     {
         return $this->status === 1;
@@ -87,15 +54,12 @@ class User extends Authenticatable
     }
 
 
-/**
- * Cast attributes
- */
-protected
-function casts(): array
-{
-    return [
-        'email_verified_at' => 'datetime',
-        'password' => 'hashed',
-    ];
-}
+
+    protected function casts(): array
+    {
+        return [
+            'email_verified_at' => 'datetime',
+            'password' => 'hashed',
+        ];
+    }
 }
