@@ -23,7 +23,8 @@ body {
 }
 
 .registration-container {
-    min-height: calc(100vh - 60px); /* Account for navbar */
+    min-height: calc(100vh - 60px);
+    /* Account for navbar */
     padding: 1.5rem;
     background: var(--color-bg);
     position: relative;
@@ -38,18 +39,22 @@ body {
     position: relative;
     overflow: hidden;
 }
-.breadcrumbs-link{
+
+.breadcrumbs-link {
     color: white;
     text-decoration: none;
 }
-.breadcrumbs-link:hover{
+
+.breadcrumbs-link:hover {
 
     text-decoration: underline;
 }
-.btn-link{
+
+.btn-link {
     color: var(--color-primary) !important;
     text-decoration: none !important;
 }
+
 .form-section {
     background: var(--color-surface);
     border-radius: 12px;
@@ -75,7 +80,8 @@ body {
     position: relative;
 }
 
-.form-control, .form-select {
+.form-control,
+.form-select {
     background: var(--color-surface);
     border: 1px solid var(--color-border);
     border-radius: 8px;
@@ -88,7 +94,8 @@ body {
     transition: var(--transition);
 }
 
-.form-control:focus, .form-select:focus {
+.form-control:focus,
+.form-select:focus {
     border-color: var(--color-accent);
     box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.1);
     transform: translateY(-1px);
@@ -108,13 +115,13 @@ body {
     pointer-events: none;
 }
 
-.form-control:focus ~ .form-label,
-.form-control:not(:placeholder-shown) ~ .form-label {
+.form-control:focus~.form-label,
+.form-control:not(:placeholder-shown)~.form-label {
     transform: translateY(-1.4rem) scale(0.85);
     color: var(--color-accent);
 }
 
-.btn-primary  {
+.btn-primary {
     background: var(--color-accent) !important;
     color: white;
     padding: 0.75rem 2rem;
@@ -141,7 +148,7 @@ body {
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
     transform: translateX(-100%);
     transition: transform 0.3s ease;
 }
@@ -176,25 +183,37 @@ body {
 }
 
 @keyframes rotate {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 @keyframes slideUp {
-    from { transform: translateY(10px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
+    from {
+        transform: translateY(10px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
 }
 
 @media (max-width: 640px) {
     .registration-container {
         padding: 1rem;
     }
-    
+
     .form-section {
         padding: 2rem;
         border-radius: 16px;
     }
-    
+
     .form-title {
         font-size: 1.5rem;
     }
@@ -204,15 +223,15 @@ body {
     .registration-container {
         grid-template-columns: 1fr;
     }
-    
+
     .hero-section {
         display: none;
     }
-    
+
     .form-section {
         padding: 2rem;
     }
-    
+
     .form-row {
         grid-template-columns: 1fr;
     }
@@ -238,7 +257,9 @@ body {
 }
 
 @keyframes spin {
-    to { transform: rotate(360deg); }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 .admin-header {
@@ -313,8 +334,15 @@ body {
 
 /* New Animations */
 @keyframes slideIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* Additional styles for enhanced UI */
@@ -337,4 +365,8 @@ body {
     font-size: 0.75rem;
     color: var(--color-text-light);
     margin-top: 0.25rem;
+}
+
+.card-header {
+    background-color: #f66824 !important;
 }

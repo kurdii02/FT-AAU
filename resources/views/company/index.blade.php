@@ -17,10 +17,7 @@
                                 <i class="fa-solid fa-plus"></i>
                                 <span>Add New Company</span>
                             </a>
-                            <a href="#" class="btn">
-                                <i class="fa-solid fa-file-export"></i>
-                                <span>Export to Excel</span>
-                            </a>
+
                         </div>
                     </div>
                 </div>
@@ -44,7 +41,8 @@
 
                                 <td class="action-group">
 
-                                    <a href="{{ route('company.edit', [$company]) }}" class="action-btn edit" title="Edit">
+                                    <a href="{{ route('company.edit', [$company]) }}" class="action-btn edit"
+                                        title="Edit">
                                         <i class="fa-solid fa-gear"></i>
                                     </a>
                                     <form method="POST" action="{{ route('company.destroy', $company) }}"

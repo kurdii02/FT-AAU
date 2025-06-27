@@ -10,17 +10,23 @@
                 <div class="table-title">
                     <div class="row">
                         <div class="col-sm-5">
-                            <h2>User <b>Management</b></h2>
+                            <h2>
+                                @if (auth()->user()->role->name == 'super_admin')
+                                    <span>Users</span>
+                                @else
+                                    <span>Students</span>
+                                @endif
+                                <b>Management</b>
+                            </h2>
                         </div>
                         <div class="table-action-group">
-                            <a href="{{ route('user.create') }}" class="btn">
-                                <i class="fa-solid fa-plus"></i>
-                                <span>Add New User</span>
-                            </a>
-                            <a href="#" class="btn">
-                                <i class="fa-solid fa-file-export"></i>
-                                <span>Export to Excel</span>
-                            </a>
+                            @if (auth()->user()->role->name == 'super_admin')
+                                <a href="{{ route('user.create') }}" class="btn">
+                                    <i class="fa-solid fa-plus"></i>
+                                    <span>Add New User</span>
+                                </a>
+                            @endif
+
                         </div>
                     </div>
                 </div>
@@ -32,7 +38,7 @@
                             <th>Date Created</th>
                             <th>Role</th>
                             <th>Status</th>
-                            @if (auth()->user()->role->name == 'super_admin' || auth()->user()->role->name == 'admin')
+                            @if (auth()->user()->role->name == 'super_admin')
                                 <th>Action</th>
                             @endif
                         </tr>
@@ -43,7 +49,7 @@
                                 <td>{{ $user->id }}</td>
                                 <td>{{ $user->name }}</td>
                                 <td>{{ $user->created_at }}</td>
-                                <td>{{ $user->role->name }}</td>
+                                <td>{{ $user->role->visible_name }}</td>
                                 <td>
                                     <div class="status-badge {{ $user->status == 1 ? 'active' : 'inactive' }}">
                                         <span
@@ -52,10 +58,7 @@
                                     </div>
                                 </td>
 
-
-
-
-                                @if (auth()->user()->role->name == 'super_admin' || auth()->user()->role->name == 'admin')
+                                @if (auth()->user()->role->name == 'super_admin')
                                     <td class="action-group">
 
                                         @if ($user->status == 1)

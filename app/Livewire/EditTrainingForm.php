@@ -36,8 +36,7 @@ class EditTrainingForm extends Component
         $this->selectedCompany = $training->company_id;
         $this->selectedTrainer = $training->trainer_id;
         $this->status = $training->status;
-        $this->notes = $training->Additional_notes;
-        $this->tbook = $training->training_book;
+
 
         // Load trainers for the selected company
         if ($this->selectedCompany) {
@@ -71,8 +70,6 @@ class EditTrainingForm extends Component
                 'selectedTrainer' => 'required|exists:users,id',
                 'selectedCompany' => 'required|exists:companies,id',
                 'status' => 'required|boolean',
-                'notes' => 'nullable|string|max:255',
-                'tbook' => 'nullable|mimes:jpeg,png,jpg,gif,svg,webp,pdf,docx|max:2048',
             ]);
             if ($this->tbook) {
                 $filePath = $this->tbook->store('training_files/Training_book', 'public');
@@ -84,7 +81,6 @@ class EditTrainingForm extends Component
                 'trainer_id' => $this->selectedTrainer,
                 'status' => $this->status,
                 'company_id' => $this->selectedCompany,
-                'Additional_notes' => $this->notes
             ]);
 
             session()->flash('message', 'Training updated successfully!');

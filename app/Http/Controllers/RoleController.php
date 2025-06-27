@@ -22,30 +22,38 @@ class RoleController extends Controller
     {
         $data = $request->validate([
             'name' => 'required|unique:roles',
+            'visible_name' => 'required|unique:roles',
+
         ]);
 
         Role::create(
             [
                 'name' => $data['name'],
+                'visible_name' => $data['visible_name']
             ]
         );
         return redirect()->route('role.index');
     }
 
-    public function edit(Role $role){
+    public function edit(Role $role)
+    {
         return view('role.edit', compact('role'));
     }
 
-    public function update(Request $request, Role $role){
+    public function update(Request $request, Role $role)
+    {
         $data = $request->validate([
-            'name' => 'required|unique:roles',
+            'name' => 'required|unique:roles,name,' . $role->id,
+            'visible_name' => 'required',
         ]);
         $role->update([
             'name' => $data['name'],
+            'visible_name' => $data['visible_name']
         ]);
         return redirect()->route('role.index');
     }
-    public function destroy(Role $role){
+    public function destroy(Role $role)
+    {
         $role->delete();
         return redirect()->route('role.index');
     }

@@ -112,7 +112,7 @@ class TaskController extends Controller
 
         if ($request->hasFile('attachments')) {
             foreach ($request->file('attachments') as $file) {
-                $path = $file->store('task-attachments');
+                $path = $file->store('task-attachments', 'public');
 
                 TaskAttachment::create([
                     'task_id' => $task->id,

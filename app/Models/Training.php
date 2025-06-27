@@ -17,8 +17,8 @@ class Training extends Model
         'admin_id',
         'company_id',
         'status',
-        'training_book',
-        'Additional_notes'
+        'admin_files',
+        'trainer_files'
     ];
 
     public function student()

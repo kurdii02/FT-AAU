@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Role extends Model
 {
-    protected $fillable = ['name'];
+    protected $fillable = ['name', 'visible_name'];
 
     /**
      * Define the relationship with the User model
@@ -19,7 +19,7 @@ class Role extends Model
     /**
      * Optionally, define a custom accessor if needed for the role name
      */
-// If you want to have a custom getter for the 'name' attribute:
+    // If you want to have a custom getter for the 'name' attribute:
     public function getRoleNameAttribute()
     {
         return $this->attributes['name']; // Default role name retrieval

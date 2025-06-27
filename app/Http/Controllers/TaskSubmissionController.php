@@ -39,7 +39,7 @@ class TaskSubmissionController extends Controller
 
         if ($request->hasFile('attachments')) {
             foreach ($request->file('attachments') as $file) {
-                $path = $file->store('submission-attachments');
+                $path = $file->store('submission-attachments', 'public');
 
                 TaskAttachment::create([
                     'submission_id' => $submission->id,
@@ -64,6 +64,7 @@ class TaskSubmissionController extends Controller
         $validated = $request->validate([
             'feedback' => 'required|string',
             'status' => 'required|integer|between:1,3',
+            'grade' => 'required|integer|between:0,10'
         ]);
 
         $submission->update($validated);

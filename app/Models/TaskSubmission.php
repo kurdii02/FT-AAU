@@ -20,6 +20,7 @@ class TaskSubmission extends Model
         'submission_content',
         'feedback',
         'status',
+        'grade',
     ];
 
     public function task(): BelongsTo

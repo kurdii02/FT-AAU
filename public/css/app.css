@@ -472,3 +472,7 @@
 
     }
 }
+
+.card-header {
+    background-color: #f66824 !important;
+}

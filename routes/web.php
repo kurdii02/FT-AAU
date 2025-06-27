@@ -14,7 +14,16 @@ Route::group(['middleware' => ['auth', 'role:super_admin,admin,trainer,student']
     Route::resource('/user', App\Http\Controllers\UserController::class);
     Route::resource('trainings', TrainingController::class);
     Route::get('/trainings/{id}/details', [TrainingController::class, 'addDetailsPage'])->name('details.edit');
-    Route::put('/trainings/{id}/details', [TrainingController::class, 'addDetails'])->name('trainings.details');
+    Route::get('/trainings/{training}/details', [TrainingController::class, 'addDetailsPage'])->name('trainings.details');
+    Route::put('/trainings/{training}/details', [TrainingController::class, 'addDetails'])->name('trainings.details.update');
+
+    // Specific upload routes for different user roles
+    Route::put('/trainings/{training}/upload-admin-files', [TrainingController::class, 'uploadAdminFiles'])->name('trainings.upload-admin-files');
+    Route::put('/trainings/{training}/upload-trainer-files', [TrainingController::class, 'uploadTrainerFiles'])->name('trainings.upload-trainer-files');
+
+    // File download and delete routes
+    Route::get('/trainings/{training}/download/{file}', [TrainingController::class, 'downloadFile'])->name('trainings.download-file');
+    Route::delete('/trainings/{training}/delete/{file}', [TrainingController::class, 'deleteFile'])->name('trainings.delete-file');
     Route::resource('/role', App\Http\Controllers\RoleController::class);
     Route::resource('/company', App\Http\Controllers\CompanyController::class);
     Route::put('/user/{id}/status/{status}', [UserController::class, 'updateStatus'])->name('user.updateStatus');

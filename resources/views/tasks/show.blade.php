@@ -104,7 +104,7 @@
                                                 <h6>Attachments</h6>
                                                 <div class="list-group mb-3">
                                                     @foreach ($submission->attachments as $attachment)
-                                                        <a href="{{ Storage::url($attachment->file_path) }}"
+                                                        <a href="{{ url('storage/' . $attachment->file_path) }}"
                                                             class="list-group-item list-group-item-action" target="_blank">
                                                             <i class="fa fa-file"></i> {{ $attachment->file_name }}
                                                             <span
@@ -118,6 +118,12 @@
                                                 <h5 class="card-title">Feedback</h5>
                                                 <div class="card-text p-3 bg-light rounded">
                                                     {!! nl2br(e($submission->feedback)) !!}
+                                                </div>
+                                            @endif
+                                            @if ($submission->grade)
+                                                <h5 class="card-title">Grade</h5>
+                                                <div class="card-text p-3 bg-light rounded">
+                                                    {!! nl2br(e($submission->grade)) . '/10' !!}
                                                 </div>
                                             @endif
 
@@ -138,7 +144,14 @@
                                                             </span>
                                                         @enderror
                                                     </div>
-
+                                                    <div class="input-group  mb-3" style="width:20%">
+                                                        <input type="number" max="10" min="0"
+                                                            class="form-control" placeholder="Grade" name="grade"
+                                                            aria-label="Grade">
+                                                        <div class="input-group-append">
+                                                            <span class="input-group-text" id="basic-addon2">/10</span>
+                                                        </div>
+                                                    </div>
                                                     <div class="form-group mb-3">
                                                         <label for="status">Status</label>
                                                         <select id="status"
@@ -155,7 +168,8 @@
                                                         @enderror
                                                     </div>
 
-                                                    <button type="submit" class="btn btn-primary">Submit Review</button>
+                                                    <button type="submit" class="btn btn-primary">Submit
+                                                        Review</button>
                                                 </form>
                                             @endif
                                         </div>

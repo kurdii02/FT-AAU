@@ -75,13 +75,19 @@
                                 <div class="nav-group">
                                     <div class="nav-group-title">Management</div>
                                     <ul class="nav nav-pills flex-column">
-                                        <li class="nav-item">
-                                            <a href="{{ route('user.index') }}"
-                                                class="nav-link {{ request()->routeIs('user.*') ? 'active' : '' }}">
-                                                <i class="fas fa-users"></i>
-                                                <span>Users</span>
-                                            </a>
-                                        </li>
+                                        @if (!(auth()->user()->role->name == 'student'))
+                                            <li class="nav-item">
+                                                <a href="{{ route('user.index') }}"
+                                                    class="nav-link {{ request()->routeIs('user.*') ? 'active' : '' }}">
+                                                    <i class="fas fa-users"></i>
+                                                    @if (auth()->user()->role->name == 'super_admin')
+                                                        <span>Users</span>
+                                                    @else
+                                                        <span>Students</span>
+                                                    @endif
+                                                </a>
+                                            </li>
+                                        @endif
                                         @if (auth()->user()->role->name == 'super_admin')
                                             <li class="nav-item">
                                                 <a href="{{ route('role.index') }}"
@@ -158,6 +164,7 @@
     </div>
 
     @livewireScripts
+    @stack('scripts')
 </body>
 
 </html>

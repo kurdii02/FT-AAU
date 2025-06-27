@@ -13,14 +13,12 @@
                             <h2>Training <b>Management</b></h2>
                         </div>
                         <div class="table-action-group">
-                            <a href="{{ route('trainings.create') }}" class="btn">
-                                <i class="fa-solid fa-plus"></i>
-                                <span>Add New Training</span>
-                            </a>
-                            <a href="#" class="btn">
-                                <i class="fa-solid fa-file-export"></i>
-                                <span>Export to Excel</span>
-                            </a>
+                            @if (auth()->user()->role->name == 'super_admin')
+                                <a href="{{ route('trainings.create') }}" class="btn">
+                                    <i class="fa-solid fa-plus"></i>
+                                    <span>Add New Training</span>
+                                </a>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -29,17 +27,19 @@
                         <tr>
                             <th>Id</th>
                             <th>Student Name</th>
-                            <th>Admin Name</th>
+                            <th>Supervisor Name</th>
                             <th>Trainer Name</th>
                             <th>Company</th>
                             <th>Training Status</th>
+
                             <th>Action</th>
+
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($trainings as $relation)
                             <tr>
-                                <td>{{ $relation->student->id }}</td>
+                                <td>{{ $relation->id }}</td>
                                 <td>{{ $relation->student->name }}</td>
                                 <td>{{ $relation->admin->name }}</td>
                                 <td>{{ $relation->trainer->name }}</td>
@@ -49,7 +49,11 @@
                                 <td>
                                     <div class="status-badge">
                                         <span class="status-indicator"></span>
-                                        Active
+                                        @if ($relation->status == 1)
+                                            Active
+                                        @else
+                                            Inactive
+                                        @endif
                                     </div>
                                 </td>
                                 <td class="action-group">
@@ -74,15 +78,23 @@
                                                 <i class="fa-solid fa-trash"></i>
                                             </button>
                                         </form>
+                                        {{-- <a href="{{ route('details.edit', [$relation]) }}" class="action-btn add"
+                                            title="Add">
+                                            <i class="fa-solid fa-plus"></i>
+                                        </a> --}}
                                     @endif
                                     @if (auth()->user()->role->name == 'trainer')
-                                        <a href="{{ route('download', [$relation]) }}" class="action-btn add"
+                                        {{-- <a href="{{ route('download', [$relation]) }}" class="action-btn add"
                                             title="Add">
                                             <i class="fa-solid fa-download"></i>
+                                        </a> --}}
+                                        <a href="{{ route('details.edit', [$relation]) }}" class="action-btn add"
+                                            title="Add">
+                                            <i class="fa-solid fa-plus"></i>
                                         </a>
                                         <a href="{{ route('trainings.tasks.index', [$relation]) }}" class="action-btn edit"
                                             title="Edit">
-                                            <i class="fa-solid fa-plus"></i>
+                                            <i class="fa-solid fa-list-check"></i>
                                         </a>
                                         {{-- <a href="{{ route('trainings.edit', [$relation]) }}" class="action-btn edit"
                                             title="Edit">
